@@ -1,0 +1,8 @@
+DELETE  http://localhost:3001/api/notes/699f25bed3543b3a7807ca4d
+
+### Malformed id
+
+DELETE  http://localhost:3001/api/notes/6984875210db2c82e51d35c
+
+### Not found id
+DELETE  http://localhost:3001/api/notes/6984875210db2c82e51d45c5
