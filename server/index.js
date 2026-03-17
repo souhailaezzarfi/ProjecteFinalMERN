@@ -50,6 +50,26 @@ app.get("/api/receptes/:id", async (request, response, next) => {
   }
 });
 
+//POST
+app.post("/api/receptes", (request, response, next) => {
+  const recepte = request.body;
+  const newRecepte = new Recepte({
+    titol: recepte.titol,
+    racions: recepte.racions,
+    dataPublicacio: new Date(),
+    esVegetaria: recepte.esVegetaria ?? false,
+    ingredients: recepte.ingredients,
+    passos: recepte.passos,
+    tempsCoccioMinuts: recepte.tempsCoccioMinuts,
+  });
+  newRecepte
+    .save()
+    .then((savedRecepte) => {
+      response.status(201).json(savedRecepte);
+    })
+    .catch((err) => next(err));
+});
+
 
 //PUT
 
