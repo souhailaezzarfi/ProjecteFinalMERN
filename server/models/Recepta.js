@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const recepteSchema = new Schema({
+const receptaSchema = new Schema({
   titol: {
     type: String,
     required: true,
@@ -42,5 +42,5 @@ const recepteSchema = new Schema({
   },
 });
 
-const Recepte = model("Recepte", recepteSchema);
+const Recepte = model("Recepte", receptaSchema);
 module.exports = Recepte;

@@ -1,22 +1,22 @@
 import axios from "axios";
-import type { NewRecepte, Recepte } from "../types/Recepte";
+import type { NewRecepta, Recepta } from "../types/Recepta";
 //GET
-export const getAll = async (url: string): Promise<Recepte[]> => {
-  const res = await axios.get<Recepte[]>(url);
+export const getAll = async (url: string): Promise<Recepta[]> => {
+  const res = await axios.get<Recepta[]>(url);
   return res.data;
 };
 //GET by ID
-export const getById = async (url: string, id: string): Promise<Recepte> => {
-  const res = await axios.get<Recepte>(`${url}/${id}`);
+export const getById = async (url: string, id: string): Promise<Recepta> => {
+  const res = await axios.get<Recepta>(`${url}/${id}`);
   return res.data;
 }
 //POST
-export const create = async (url: string, recepte: NewRecepte): Promise<Recepte> => {
+export const create = async (url: string, recepte: NewRecepta): Promise<Recepta> => {
   const res = await axios.post(url, recepte)
   return res.data
 }
 //PUT
-export const update = async (url: string, id: string, updatedRecepte: NewRecepte): Promise<Recepte> => {
+export const update = async (url: string, id: string, updatedRecepte: NewRecepta): Promise<Recepta> => {
   const res = await axios.put(`${url}/${id}`, updatedRecepte)
   return res.data
 }
