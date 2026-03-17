@@ -16,7 +16,7 @@ export const create = async (url: string, recepte: NewRecepta): Promise<Recepta>
   return res.data
 }
 //PUT
-export const update = async (url: string, id: string, updatedRecepte: NewRecepta): Promise<Recepta> => {
-  const res = await axios.put(`${url}/${id}`, updatedRecepte)
+export const update = async (url: string, id: string, updatedRecepta: NewRecepta): Promise<Recepta> => {
+  const res = await axios.put(`${url}/${id}`, updatedRecepta)
   return res.data
 }
