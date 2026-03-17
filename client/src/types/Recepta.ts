@@ -1,4 +1,4 @@
-export type Recepte = {
+export type Recepta = {
   _id: string;
   titol: string;
   racions: number;
@@ -8,7 +8,7 @@ export type Recepte = {
   tempsCoccioMinuts: number;
   dataPublicacio: string;
 };
-export type NewRecepte = {
+export type NewRecepta = {
   titol: string;
   racions: number;
   esVegetaria: boolean;
@@ -17,9 +17,9 @@ export type NewRecepte = {
   tempsCoccioMinuts: number;
   dataPublicacio: string;
 };
-export type RecepteFormProps = {
-  newContent: NewRecepte;
-  editingNote: Recepte | null;
+export type ReceptaFormProps = {
+  newContent: NewRecepta;
+  editingNote: Recepta | null;
   onTitolChange: (value: string) => void;
   onRacionsChange: (value: number) => void;
   onEsVegetariaChange: (value: boolean) => void;

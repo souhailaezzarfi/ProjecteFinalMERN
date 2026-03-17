@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-const Recepte = require("./models/Recepte");
+const Recepta = require("./models/Recepta");
 const notFound = require("./middlewares/notFound");
 const handleErrors = require("./middlewares/handleErrors");
 app.use(
@@ -32,7 +32,7 @@ app.get("/", (request, response) => {
 });
 app.get("/api/receptes", async (request, response, next) => {
   try {
-    const receptes = await Recepte.find({});
+    const receptes = await Recepta.find({});
     response.json(receptes);
   } catch (error) {
     next(error);
@@ -42,8 +42,8 @@ app.get("/api/receptes", async (request, response, next) => {
 app.get("/api/receptes/:id", async (request, response, next) => {
   const { id } = request.params;
   try {
-    const recepte = await Recepte.findById(id);
-    recepte ? response.json(recepte) : next();
+    const recepta = await Recepta.findById(id);
+    recepta ? response.json(recepta) : next();
     //El next fa al middleware notFound, si no ho hauriem de possar explicitament
   } catch (error) {
     next(error);
@@ -52,39 +52,38 @@ app.get("/api/receptes/:id", async (request, response, next) => {
 
 //POST
 app.post("/api/receptes", (request, response, next) => {
-  const recepte = request.body;
-  const newRecepte = new Recepte({
-    titol: recepte.titol,
-    racions: recepte.racions,
+  const recepta = request.body;
+  const newRecepta = new Recepta({
+    titol: recepta.titol,
+    racions: recepta.racions,
     dataPublicacio: new Date(),
-    esVegetaria: recepte.esVegetaria ?? false,
-    ingredients: recepte.ingredients,
-    passos: recepte.passos,
-    tempsCoccioMinuts: recepte.tempsCoccioMinuts,
+    esVegetaria: recepta.esVegetaria ?? false,
+    ingredients: recepta.ingredients,
+    passos: recepta.passos,
+    tempsCoccioMinuts: recepta.tempsCoccioMinuts,
   });
-  newRecepte
+  newRecepta
     .save()
-    .then((savedRecepte) => {
-      response.status(201).json(savedRecepte);
+    .then((savedRecepta) => {
+      response.status(201).json(savedRecepta);
     })
     .catch((err) => next(err));
 });
-
 
 //PUT
 
 app.put("/api/receptes/:id", (request, response, next) => {
   const { id } = request.params;
-  const recepte = request.body;
-  const newRecepteInfo = {
-    titol: recepte.titol,
-    racions: recepte.racions,
-    esVegetaria: recepte.esVegetaria,
-    ingredients: recepte.ingredients,
-    passos: recepte.passos,
-    tempsCoccioMinuts: recepte.tempsCoccioMinuts,
+  const recepta = request.body;
+  const newReceptaInfo = {
+    titol: recepta.titol,
+    racions: recepta.racions,
+    esVegetaria: recepta.esVegetaria,
+    ingredients: recepta.ingredients,
+    passos: recepta.passos,
+    tempsCoccioMinuts: recepta.tempsCoccioMinuts,
   };
-  Recepte.findByIdAndUpdate(id, newRecepteInfo, { returnDocument: "after" })
+  Recepta.findByIdAndUpdate(id, newReceptaInfo, { returnDocument: "after" })
     .then((result) => {
       result ? response.json(result) : next();
     })
@@ -93,7 +92,7 @@ app.put("/api/receptes/:id", (request, response, next) => {
 // DELETE
 app.delete("/api/receptes/:id", (request, response, next) => {
   const { id } = request.params;
-  Recepte.findByIdAndDelete(id)
+  Recepta.findByIdAndDelete(id)
     .then((result) => {
       result ? response.status(204).end() : next();
     })
