@@ -20,3 +20,8 @@ export const update = async (url: string, id: string, updatedRecepta: NewRecepta
   const res = await axios.put(`${url}/${id}`, updatedRecepta)
   return res.data
 }
+
+// DELETE
+export const deleteById = async (url: string, id: string): Promise<void> => {
+  await axios.delete(`${url}/${id}`)
+}

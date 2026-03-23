@@ -19,7 +19,7 @@ export type NewRecepta = {
 };
 export type ReceptaFormProps = {
   newContent: NewRecepta;
-  editingNote: Recepta | null;
+  editingRecepta: Recepta | null;
   onTitolChange: (value: string) => void;
   onRacionsChange: (value: number) => void;
   onEsVegetariaChange: (value: boolean) => void;
