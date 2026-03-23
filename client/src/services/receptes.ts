@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { NewRecepta, Recepta } from '../types/Recepta'
 
-const baseUrl = 'http://localhost:3001/api/receptes'
+const baseUrl = 'http://localhost:3005/api/receptes'
 
 const getAll = async (): Promise<Recepta[]> => {
   const response = await axios.get<Recepta[]>(baseUrl)

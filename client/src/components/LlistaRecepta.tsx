@@ -30,7 +30,6 @@ const LlistaRecepta = ({ receptes, onEdit, onDelete, onVeure }: LlistaReceptaPro
                         </h3>
 
                         {/* Info */}
-
                         {/* Racions */}
                         <div className="flex items-center gap-1">
                             <UserIcon className="w-5 h-5 text-[#FF6B35]" />

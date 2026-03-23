@@ -11,7 +11,6 @@ export default function FormRecepta({
   onIngredientsChange,
   onPassosChange,
   onTempsCoccioChange,
-  onDataPublicacioChange,
   onSubmit,
 }: ReceptaFormProps) {
   const [ingredientsText, setIngredientsText] = useState('')
@@ -140,17 +139,6 @@ export default function FormRecepta({
         />
       </div>
 
-      <div className="mb-6">
-        <label className="block text-slate-700 font-medium mb-2">
-          Data publicació
-        </label>
-        <input
-          type="date"
-          value={newContent.dataPublicacio}
-          onChange={(e) => onDataPublicacioChange(e.target.value)}
-          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
-        />
-      </div>
 
       <div className="flex flex-wrap gap-3">
         <Button type="submit">

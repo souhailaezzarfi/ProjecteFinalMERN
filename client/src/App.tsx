@@ -33,6 +33,7 @@ function App() {
       .catch(() => setError('Error carregant les receptes'))
   }, [])
 
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError(null)
