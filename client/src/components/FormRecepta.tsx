@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { ReceptaFormProps } from '../types/Recepta'
 import Button from './Button'
 
@@ -12,107 +13,135 @@ export default function FormRecepta({
   onTempsCoccioChange,
   onSubmit,
 }: ReceptaFormProps) {
+  const [ingredientsText, setIngredientsText] = useState('')
+  const [passosText, setPassosText] = useState('')
+
+  useEffect(() => {
+    setIngredientsText(newContent.ingredients.join(', '))
+    setPassosText(newContent.passos.join(', '))
+  }, [editingRecepta])
+
+  useEffect(() => {
+    const formulariBuit =
+      newContent.titol === '' &&
+      newContent.racions === 1 &&
+      newContent.esVegetaria === false &&
+      newContent.ingredients.length === 0 &&
+      newContent.passos.length === 0 &&
+      newContent.tempsCoccioMinuts === 0 &&
+      newContent.dataPublicacio === ''
+
+    if (formulariBuit) {
+      setIngredientsText('')
+      setPassosText('')
+    }
+  }, [newContent])
+
+  const handleIngredientsChange = (value: string) => {
+    setIngredientsText(value)
+    onIngredientsChange(
+      value
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    )
+  }
+
+  const handlePassosChange = (value: string) => {
+    setPassosText(value)
+    onPassosChange(
+      value
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    )
+  }
+
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-white p-6 rounded-xl shadow-md border border-gray-100 max-w-2xl mx-auto"
+      className="bg-white rounded-2xl shadow-md p-6 max-w-2xl mx-auto"
     >
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+      <h2 className="text-2xl font-bold text-slate-800 mb-6">
         {editingRecepta ? 'Editar recepta' : 'Crear recepta'}
       </h2>
 
-      {/* Títol */}
       <div className="mb-4">
-        <label className="block font-medium text-gray-700 mb-1">Títol</label>
+        <label className="block text-slate-700 font-medium mb-2">Títol</label>
         <input
           type="text"
           value={newContent.titol}
           onChange={(e) => onTitolChange(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:outline-none"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
+          placeholder="Ex: Arròs amb llet"
         />
       </div>
 
-      {/* Racions */}
       <div className="mb-4">
-        <label className="block font-medium text-gray-700 mb-1">Racions</label>
+        <label className="block text-slate-700 font-medium mb-2">Racions</label>
         <input
           type="number"
+          min="1"
           value={newContent.racions}
           onChange={(e) => onRacionsChange(Number(e.target.value))}
-          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:outline-none"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
         />
       </div>
 
-      {/* Vegetariana */}
-      <div className="mb-4 flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={newContent.esVegetaria}
-          onChange={(e) => onEsVegetariaChange(e.target.checked)}
-          className="w-4 h-4 accent-[#06D6A0]"
-        />
-        <label className="text-gray-700">És vegetariana</label>
-      </div>
-
-      {/* Ingredients */}
       <div className="mb-4">
-        <label className="block font-medium text-gray-700 mb-1">
+        <label className="inline-flex items-center gap-2 text-slate-700 font-medium">
+          <input
+            type="checkbox"
+            checked={newContent.esVegetaria}
+            onChange={(e) => onEsVegetariaChange(e.target.checked)}
+            className="h-4 w-4"
+          />
+          És vegetariana
+        </label>
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-slate-700 font-medium mb-2">
           Ingredients (separats per comes)
         </label>
         <input
           type="text"
-          value={newContent.ingredients.join(', ')}
-          onChange={(e) =>
-            onIngredientsChange(
-              e.target.value
-                .split(',')
-                .map((item) => item.trim())
-                .filter(Boolean)
-            )
-          }
-          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:outline-none"
+          value={ingredientsText}
+          onChange={(e) => handleIngredientsChange(e.target.value)}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
+          placeholder="Ex: arròs, llet, sucre, canyella"
         />
       </div>
 
-      {/* Passos */}
       <div className="mb-4">
-        <label className="block font-medium text-gray-700 mb-1">
+        <label className="block text-slate-700 font-medium mb-2">
           Passos (separats per comes)
         </label>
         <input
           type="text"
-          value={newContent.passos.join(', ')}
-          onChange={(e) =>
-            onPassosChange(
-              e.target.value
-                .split(',')
-                .map((item) => item.trim())
-                .filter(Boolean)
-            )
-          }
-          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:outline-none"
+          value={passosText}
+          onChange={(e) => handlePassosChange(e.target.value)}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
+          placeholder="Ex: bull la llet, afegeix l'arròs, remena, serveix"
         />
       </div>
 
-      {/* Temps */}
-      <div className="mb-6">
-        <label className="block font-medium text-gray-700 mb-1">
+      <div className="mb-4">
+        <label className="block text-slate-700 font-medium mb-2">
           Temps de cocció (minuts)
         </label>
         <input
           type="number"
+          min="0"
           value={newContent.tempsCoccioMinuts}
           onChange={(e) => onTempsCoccioChange(Number(e.target.value))}
-          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:outline-none"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
         />
       </div>
 
-      {/* Botó */}
-      <div className="mt-6">
-        <Button
-          type="submit"
-          className="bg-[#FF6B35] hover:bg-[#e85f2f] text-white px-6 py-2 rounded-lg"
-        >
+
+      <div className="flex flex-wrap gap-3">
+        <Button type="submit">
           {editingRecepta ? 'Actualitzar recepta' : 'Guardar recepta'}
         </Button>
       </div>

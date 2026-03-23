@@ -35,8 +35,8 @@ export default function DetallRecepta({ recepta }: DetallReceptaProps) {
                 {/* Vegetariana */}
                 <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${recepta.esVegetaria
-                            ? 'bg-[#06D6A0]/20 text-[#06D6A0]'
-                            : 'bg-red-100 text-red-600'
+                        ? 'bg-[#06D6A0]/20 text-[#06D6A0]'
+                        : 'bg-red-100 text-red-600'
                         }`}
                 >
                     {recepta.esVegetaria ? 'Vegetariana' : 'No vegetariana'}
