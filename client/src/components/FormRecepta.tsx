@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react'
 import type { ReceptaFormProps } from '../types/Recepta'
 import Button from './Button'
 
 export default function FormRecepta({
   newContent,
-  editingNote,
+  editingRecepta,
   onTitolChange,
   onRacionsChange,
   onEsVegetariaChange,
@@ -13,92 +14,147 @@ export default function FormRecepta({
   onDataPublicacioChange,
   onSubmit,
 }: ReceptaFormProps) {
-  return (
-    <form onSubmit={onSubmit}>
-      <h2>{editingNote ? 'Editar recepta' : 'Crear recepta'}</h2>
+  const [ingredientsText, setIngredientsText] = useState('')
+  const [passosText, setPassosText] = useState('')
 
-      <div>
-        <label>Títol</label>
+  useEffect(() => {
+    setIngredientsText(newContent.ingredients.join(', '))
+    setPassosText(newContent.passos.join(', '))
+  }, [editingRecepta])
+
+  useEffect(() => {
+    const formulariBuit =
+      newContent.titol === '' &&
+      newContent.racions === 1 &&
+      newContent.esVegetaria === false &&
+      newContent.ingredients.length === 0 &&
+      newContent.passos.length === 0 &&
+      newContent.tempsCoccioMinuts === 0 &&
+      newContent.dataPublicacio === ''
+
+    if (formulariBuit) {
+      setIngredientsText('')
+      setPassosText('')
+    }
+  }, [newContent])
+
+  const handleIngredientsChange = (value: string) => {
+    setIngredientsText(value)
+    onIngredientsChange(
+      value
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    )
+  }
+
+  const handlePassosChange = (value: string) => {
+    setPassosText(value)
+    onPassosChange(
+      value
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    )
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="bg-white rounded-2xl shadow-md p-6 max-w-2xl mx-auto"
+    >
+      <h2 className="text-2xl font-bold text-slate-800 mb-6">
+        {editingRecepta ? 'Editar recepta' : 'Crear recepta'}
+      </h2>
+
+      <div className="mb-4">
+        <label className="block text-slate-700 font-medium mb-2">Títol</label>
         <input
           type="text"
           value={newContent.titol}
           onChange={(e) => onTitolChange(e.target.value)}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
+          placeholder="Ex: Arròs amb llet"
         />
       </div>
 
-      <div>
-        <label>Racions</label>
+      <div className="mb-4">
+        <label className="block text-slate-700 font-medium mb-2">Racions</label>
         <input
           type="number"
+          min="1"
           value={newContent.racions}
           onChange={(e) => onRacionsChange(Number(e.target.value))}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
         />
       </div>
 
-      <div>
-        <label>
+      <div className="mb-4">
+        <label className="inline-flex items-center gap-2 text-slate-700 font-medium">
           <input
             type="checkbox"
             checked={newContent.esVegetaria}
             onChange={(e) => onEsVegetariaChange(e.target.checked)}
+            className="h-4 w-4"
           />
           És vegetariana
         </label>
       </div>
 
-      <div>
-        <label>Ingredients (separats per comes)</label>
+      <div className="mb-4">
+        <label className="block text-slate-700 font-medium mb-2">
+          Ingredients (separats per comes)
+        </label>
         <input
           type="text"
-          value={newContent.ingredients.join(', ')}
-          onChange={(e) =>
-            onIngredientsChange(
-              e.target.value
-                .split(',')
-                .map((item) => item.trim())
-                .filter(Boolean)
-            )
-          }
+          value={ingredientsText}
+          onChange={(e) => handleIngredientsChange(e.target.value)}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
+          placeholder="Ex: arròs, llet, sucre, canyella"
         />
       </div>
 
-      <div>
-        <label>Passos (separats per comes)</label>
+      <div className="mb-4">
+        <label className="block text-slate-700 font-medium mb-2">
+          Passos (separats per comes)
+        </label>
         <input
           type="text"
-          value={newContent.passos.join(', ')}
-          onChange={(e) =>
-            onPassosChange(
-              e.target.value
-                .split(',')
-                .map((item) => item.trim())
-                .filter(Boolean)
-            )
-          }
+          value={passosText}
+          onChange={(e) => handlePassosChange(e.target.value)}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
+          placeholder="Ex: bull la llet, afegeix l'arròs, remena, serveix"
         />
       </div>
 
-      <div>
-        <label>Temps de cocció (minuts)</label>
+      <div className="mb-4">
+        <label className="block text-slate-700 font-medium mb-2">
+          Temps de cocció (minuts)
+        </label>
         <input
           type="number"
+          min="0"
           value={newContent.tempsCoccioMinuts}
           onChange={(e) => onTempsCoccioChange(Number(e.target.value))}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
         />
       </div>
 
-      <div>
-        <label>Data publicació</label>
+      <div className="mb-6">
+        <label className="block text-slate-700 font-medium mb-2">
+          Data publicació
+        </label>
         <input
           type="date"
           value={newContent.dataPublicacio}
           onChange={(e) => onDataPublicacioChange(e.target.value)}
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-300"
         />
       </div>
 
-      <div style={{ marginTop: '16px' }}>
+      <div className="flex flex-wrap gap-3">
         <Button type="submit">
-          {editingNote ? 'Actualitzar recepta' : 'Guardar recepta'}
+          {editingRecepta ? 'Actualitzar recepta' : 'Guardar recepta'}
         </Button>
       </div>
     </form>

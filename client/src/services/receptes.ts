@@ -1,22 +1,36 @@
-import axios from "axios";
-import type { NewRecepta, Recepta } from "../types/Recepta";
-//GET
-export const getAll = async (url: string): Promise<Recepta[]> => {
-  const res = await axios.get<Recepta[]>(url);
-  return res.data;
-};
-//GET by ID
-export const getById = async (url: string, id: string): Promise<Recepta> => {
-  const res = await axios.get<Recepta>(`${url}/${id}`);
-  return res.data;
+import axios from 'axios'
+import type { NewRecepta, Recepta } from '../types/Recepta'
+
+const baseUrl = 'http://localhost:3001/api/receptes'
+
+const getAll = async (): Promise<Recepta[]> => {
+  const response = await axios.get<Recepta[]>(baseUrl)
+  return response.data
 }
-//POST
-export const create = async (url: string, recepte: NewRecepta): Promise<Recepta> => {
-  const res = await axios.post(url, recepte)
-  return res.data
+
+const getById = async (id: string): Promise<Recepta> => {
+  const response = await axios.get<Recepta>(`${baseUrl}/${id}`)
+  return response.data
 }
-//PUT
-export const update = async (url: string, id: string, updatedRecepta: NewRecepta): Promise<Recepta> => {
-  const res = await axios.put(`${url}/${id}`, updatedRecepta)
-  return res.data
+
+const create = async (newObject: NewRecepta): Promise<Recepta> => {
+  const response = await axios.post<Recepta>(baseUrl, newObject)
+  return response.data
+}
+
+const update = async (id: string, newObject: NewRecepta): Promise<Recepta> => {
+  const response = await axios.put<Recepta>(`${baseUrl}/${id}`, newObject)
+  return response.data
+}
+
+const remove = async (id: string): Promise<void> => {
+  await axios.delete(`${baseUrl}/${id}`)
+}
+
+export default {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
 }

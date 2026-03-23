@@ -11,8 +11,11 @@ const handleErrors = require("./middlewares/handleErrors");
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = [process.env.CORS_ORIGIN, "http://localhost:5174"];
-      // Permet peticions sense origin (Postman, REST Client, curl)
+      const allowedOrigins = [
+        process.env.CORS_ORIGIN,
+        "http://localhost:5173",
+        "http://localhost:5174",
+      ].filter(Boolean);      // Permet peticions sense origin (Postman, REST Client, curl)
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
